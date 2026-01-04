@@ -84,7 +84,20 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 export const contextos = {
     // Health & Stats
     health: () => request<{ status: string; timestamp: number }>('/health'),
-    stats: () => request<Stats>('/stats'),
+    stats: async (): Promise<Stats> => {
+        try {
+            return await request<Stats>('/stats');
+        } catch {
+            // Return mock stats for Vercel deployment where full backend isn't available
+            return {
+                memory: { totalEntries: 0, byType: {}, cacheSize: 0, cacheHitRate: 0 },
+                kernel: { state: 'idle', tasksByStatus: { pending: 0, running: 0, completed: 0, failed: 0 }, queueLength: 0 },
+                registry: { total: 1, byState: { idle: 1 } },
+                bus: { totalMessages: 0, pendingMessages: 0, subscriptions: 0 },
+                gemini: null,
+            };
+        }
+    },
 
     // Kernel
     getKernelState: () => request<{ state: string }>('/kernel/state'),

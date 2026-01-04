@@ -28,7 +28,17 @@ export function useWebSocket(url: string = 'ws://localhost:3001/ws'): UseWebSock
     const wsRef = useRef<WebSocket | null>(null);
     const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+    // Check if we're on localhost (development) or production
+    const isLocalhost = typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
     const connect = useCallback(() => {
+        // Skip WebSocket connection on production (Vercel) - no WS server there
+        if (!isLocalhost) {
+            console.log('[WebSocket] Skipping connection on production environment');
+            return;
+        }
+
         if (wsRef.current?.readyState === WebSocket.OPEN) return;
 
         try {
