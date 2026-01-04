@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "buildCommand": "cd frontend && npm install && npm run build",
+    "installCommand": "cd api && npm install && cd ../frontend && npm install",
+    "outputDirectory": "frontend/dist",
+    "rewrites": [
+        {
+            "source": "/api/(.*)",
+            "destination": "/api/index.ts"
+        }
+    ],
+    "functions": {
+        "api/index.ts": {
+            "maxDuration": 60
+        }
+    }
+}

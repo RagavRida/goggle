@@ -221,5 +221,27 @@ export function createRoutes(contextos: ContextOS): Router {
         }
     });
 
+    // Demo: Golden Run (Streaming)
+    router.get('/demo/golden-run', async (req: Request, res: Response) => {
+        // Set headers for SSE
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Connection', 'keep-alive');
+
+        try {
+            await runGoldenDemo((message) => {
+                // Send each log line as an SSE data event
+                res.write(`data: ${JSON.stringify({ message })}\n\n`);
+            });
+            res.write('event: complete\ndata: "Done"\n\n');
+        } catch (error) {
+            res.write(`event: error\ndata: ${JSON.stringify({ error: String(error) })}\n\n`);
+        } finally {
+            res.end();
+        }
+    });
+
     return router;
 }
+
+import { runGoldenDemo } from '../demo/runner.js';

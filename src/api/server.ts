@@ -184,9 +184,10 @@ process.on('SIGINT', () => {
     process.exit(0);
 });
 
-// Start server
-server.listen(PORT, () => {
-    console.log(`
+// Start server only if not running in Vercel
+if (!process.env.VERCEL) {
+    server.listen(PORT, () => {
+        console.log(`
 ╔═══════════════════════════════════════════════════════════════╗
 ║                                                               ║
 ║   ContextOS API Server                                        ║
@@ -197,6 +198,7 @@ server.listen(PORT, () => {
 ║   Endpoints:                                                  ║
 ║     GET  /api/stats          - System statistics              ║
 ║     GET  /api/health         - Health check                   ║
+║     GET  /api/demo/golden-run - Streaming Agent Demo          ║
 ║     POST /api/memory         - Create memory                  ║
 ║     GET  /api/memory         - Retrieve memories              ║
 ║     POST /api/execute        - Execute task                   ║
@@ -206,7 +208,8 @@ server.listen(PORT, () => {
 ║     GET  /api/kernel/state   - Kernel state                   ║
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
-`);
-});
+    `);
+    });
+}
 
 export { app, server, wss, contextos };

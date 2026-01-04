@@ -146,7 +146,7 @@ export type Task = z.infer<typeof TaskSchema>;
 
 export interface GeminiConfig {
     apiKey: string;
-    model: 'gemini-2.0-flash' | 'gemini-2.0-pro';
+    model: 'gemini-2.0-flash' | 'gemini-2.0-pro' | 'gemini-1.5-flash' | 'gemini-1.5-pro' | 'gemini-flash-latest';
     maxTokens?: number;
     temperature?: number;
     topP?: number;

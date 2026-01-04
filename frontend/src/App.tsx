@@ -1,6 +1,7 @@
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import Demo from './components/Demo';
+import AgentDemo from './components/AgentDemo';
 import Dashboard from './components/Dashboard';
 import Architecture from './components/Architecture';
 import UseCases from './components/UseCases';
@@ -13,6 +14,7 @@ function App() {
       <Navigation />
       <Hero />
       <Demo />
+      <AgentDemo />
       <Dashboard />
       <Architecture />
       <UseCases />

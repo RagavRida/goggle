@@ -9,7 +9,7 @@ import { GeminiConfig, GeminiRequest, GeminiResponse, Result, ok, err } from '..
 
 export interface ClientConfig {
     apiKey: string;
-    defaultModel?: 'gemini-2.0-flash' | 'gemini-2.0-pro';
+    defaultModel?: 'gemini-2.0-flash' | 'gemini-2.0-pro' | 'gemini-1.5-flash' | 'gemini-1.5-pro' | 'gemini-flash-latest';
     maxRetries?: number;
     retryDelayMs?: number;
     rateLimitRpm?: number; // Requests per minute
@@ -113,7 +113,7 @@ export class GeminiClient {
     /**
      * Simple generation with just a prompt
      */
-    async prompt(text: string, model?: 'gemini-2.0-flash' | 'gemini-2.0-pro'): Promise<Result<string>> {
+    async prompt(text: string, model?: 'gemini-2.0-flash' | 'gemini-2.0-pro' | 'gemini-1.5-flash' | 'gemini-1.5-pro' | 'gemini-flash-latest'): Promise<Result<string>> {
         const result = await this.generate({
             prompt: text,
             config: model ? { apiKey: '', model } : undefined,
