@@ -77,6 +77,102 @@ cd frontend && npm run dev
 
 Visit `http://localhost:5173` to verify the connection.
 
+## 🔌 Connecting to the Kernel
+
+### REST API
+
+The kernel exposes a REST API at `http://localhost:3001/api`:
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/health` | GET | Health check |
+| `/api/stats` | GET | System statistics (memory, kernel state, agents) |
+| `/api/kernel/state` | GET | Current kernel state |
+| `/api/memory` | POST | Store a new memory |
+| `/api/memory` | GET | Retrieve memories (with optional query params) |
+| `/api/execute` | POST | Execute a task |
+| `/api/tasks` | GET | List all tasks |
+| `/api/agents` | GET | List registered agents |
+| `/api/agents` | POST | Register a new agent |
+| `/api/demo/golden-run` | GET | Stream the "Golden Run" agent demo (SSE) |
+
+**Example: Create a Memory**
+```bash
+curl -X POST http://localhost:3001/api/memory \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "fact",
+    "content": {"rule": "Always use TypeScript"},
+    "agentId": "my-agent",
+    "taskId": "task-1"
+  }'
+```
+
+**Example: Execute a Task**
+```bash
+curl -X POST http://localhost:3001/api/execute \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "refactor-auth",
+    "input": {"file": "src/auth.ts", "instruction": "Convert to async/await"}
+  }'
+```
+
+### WebSocket Events
+
+Connect to `ws://localhost:3001/ws` for real-time kernel events:
+
+```javascript
+const ws = new WebSocket('ws://localhost:3001/ws');
+
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log('Kernel Event:', data.type, data.payload);
+};
+
+// Event types:
+// - task:created, task:started, task:completed, task:failed
+// - memory:stored, memory:retrieved
+// - agent:registered, agent:state_changed
+// - kernel:state_changed
+```
+
+### Programmatic Integration (TypeScript)
+
+```typescript
+// Using the API client
+import { contextos } from './services/api';
+
+// Get system stats
+const stats = await contextos.stats();
+console.log('Kernel State:', stats.kernel.state);
+
+// Store a constraint
+await contextos.createMemory({
+  type: 'decision',
+  content: { rule: 'No arrow functions in legacy modules' },
+  agentId: 'constraint-agent',
+  taskId: 'setup',
+  tags: ['constraint', 'legacy']
+});
+
+// Execute a task
+const task = await contextos.executeTask('auth-refactor', {
+  file: 'src/auth.ts',
+  action: 'refactor'
+});
+```
+
+### Live Demo (Vercel)
+
+Visit the deployed demo at: **https://goggle-flame.vercel.app/**
+
+The "Live Agent Demo" section showcases the Antigravity agent performing the "Amnesiac Refactor" with:
+- Memory gating and constraint storage
+- Intent classification
+- Self-correcting code generation
+- Real-time streaming output
+
 ## 🧪 Testing
 
 Run the integrated test suite:
