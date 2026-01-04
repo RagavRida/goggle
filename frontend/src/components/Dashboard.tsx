@@ -129,7 +129,7 @@ export default function Dashboard() {
                     <StatCard
                         icon={Activity}
                         label="Kernel State"
-                        value={stats?.kernel.state || 'unknown'}
+                        value={stats?.kernel?.state || 'unknown'}
                         color="bg-purple-500/20 text-purple-400"
                     />
                     <StatCard
