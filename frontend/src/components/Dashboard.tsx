@@ -120,7 +120,7 @@ export default function Dashboard() {
                             <div className={`w-2 h-2 rounded-full ${connected ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
                             WebSocket {connected ? 'Connected' : 'Disconnected'}
                         </div>
-                        {stats && <KernelStateIndicator state={stats.kernel.state} />}
+                        {stats?.kernel && <KernelStateIndicator state={stats.kernel.state} />}
                     </div>
                 </div>
 
