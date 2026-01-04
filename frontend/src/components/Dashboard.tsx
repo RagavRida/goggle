@@ -135,7 +135,7 @@ export default function Dashboard() {
                     <StatCard
                         icon={Zap}
                         label="Queue Length"
-                        value={stats?.kernel.queueLength || 0}
+                        value={stats?.kernel?.queueLength || 0}
                         color="bg-yellow-500/20 text-yellow-400"
                     />
                     <StatCard
@@ -175,7 +175,7 @@ export default function Dashboard() {
                             Task Status
                         </h3>
                         <div className="space-y-3">
-                            {Object.entries(stats?.kernel.tasksByStatus || {}).map(([status, count]) => {
+                            {Object.entries(stats?.kernel?.tasksByStatus || {}).map(([status, count]) => {
                                 const colors: Record<string, string> = {
                                     pending: 'bg-blue-500',
                                     running: 'bg-yellow-500',
@@ -183,7 +183,7 @@ export default function Dashboard() {
                                     failed: 'bg-red-500',
                                     cancelled: 'bg-zinc-500',
                                 };
-                                const total = Object.values(stats?.kernel.tasksByStatus || {}).reduce((a, b) => a + b, 0);
+                                const total = Object.values(stats?.kernel?.tasksByStatus || {}).reduce((a, b) => a + b, 0);
                                 const percentage = total > 0 ? (count / total) * 100 : 0;
 
                                 return (
